@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 using Num = System.Numerics;
@@ -52,7 +53,25 @@ namespace ImGuiNET.SampleProgram.XNA
             base.LoadContent();
         }
 
-        protected override void Draw(GameTime gameTime)
+		protected override void Update(GameTime gameTime)
+		{
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                _graphics.IsFullScreen = _graphics.IsFullScreen == false ? true : false;
+                //if (_graphics.IsFullScreen == false)
+                //{
+                //    _graphics.IsFullScreen = true;
+                //}
+                //else
+                //{
+                //    _graphics.IsFullScreen = false;
+                //}
+                _graphics.ApplyChanges();
+            }
+			base.Update(gameTime);
+		}
+
+		protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(new Color(clear_color.X, clear_color.Y, clear_color.Z));
 
@@ -82,7 +101,7 @@ namespace ImGuiNET.SampleProgram.XNA
             // Tip: if we don't call ImGui.Begin()/ImGui.End() the widgets appears in a window automatically called "Debug"
             {
                 ImGui.Text("Hello, world!");
-                ImGui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
+                ImGui.SliderFloat("float", ref f, 0.0f, 100.0f /**,string.Empty**/);
                 ImGui.ColorEdit3("clear color", ref clear_color);
                 if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
                 if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
@@ -100,6 +119,7 @@ namespace ImGuiNET.SampleProgram.XNA
                 ImGui.SetNextWindowSize(new Num.Vector2(200, 100), ImGuiCond.FirstUseEver);
                 ImGui.Begin("Another Window", ref show_another_window);
                 ImGui.Text("Hello");
+                ImGui.BulletText("Bullet...text!");
                 ImGui.End();
             }
 
